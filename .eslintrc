@@ -1,0 +1,30 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": [
+      "import"
+  ],
+  "rules": {
+      "react/prop-types": 0,
+      "react/jsx-filename-extension": 0,
+      "linebreak-style": 0,
+      "no-use-before-define": 0,
+      "react/forbid-prop-types": 0,
+      "global-require": 0,
+      "no-trailing-spaces": [
+          "error",
+          {
+              "ignoreComments": true
+          }
+      ]
+  },
+  "globals": {
+      "describe": true,
+      "it": true,
+      "before": true,
+      "beforeEach": true,
+      "expect": true,
+      "fetch": true,
+      "FormData": true
+  }
+}
