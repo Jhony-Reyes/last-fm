@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 import {
-  Container, Content, Input, Text, Button, Form, Item, Label, Toast,
+  Container, Content, Input, Text, Button, Form, Item, Label, Toast, Thumbnail,
 } from 'native-base';
-import { Constants } from 'expo';
 import { getFieldError, init } from 'aleonor-object-validations';
 import Logo from '../../../assets/images/logo.png';
 import imgFooter from '../../../assets/images/tgbBgpnT.png';
 import { Loading, ErrorText } from '../../../common/components';
 import validations from './validations';
 
+const { height } = Dimensions.get('window');
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showKeyboard: false,
       isLoading: false,
       form: {
         email: '',
@@ -50,17 +50,9 @@ class Login extends Component {
     setTimeout(() => success(), 3000);
   }
 
-  keyboardDidShow = () => {
-    this.setState({ showKeyboard: true });
-  }
-
-  keyboardDidHide = () => {
-    this.setState({ showKeyboard: false });
-  }
-
   render() {
     const {
-      showKeyboard, isLoading, form: { email, password }, formErrors,
+      isLoading, form: { email, password }, formErrors,
     } = this.state;
 
     const emailError = getFieldError(formErrors, 'email');
@@ -69,14 +61,11 @@ class Login extends Component {
     if (isLoading) { return (<Loading />); }
 
     return (
+
       <Container>
         <Content>
           <View style={styles.container}>
-            <Image
-              resizeMode="contain"
-              style={styles.logo}
-              source={Logo}
-            />
+            <Thumbnail source={Logo} style={styles.logo} />
             <View style={styles.containerForm}>
               <Form>
                 <Item floatingLabel style={styles.formItem}>
@@ -87,6 +76,7 @@ class Login extends Component {
                     onFocus={this.keyboardDidShow}
                     onBlur={this.keyboardDidHide}
                     autoCapitalize="none"
+                    keyboardType="email-address"
                   />
                 </Item>
                 <ErrorText message={emailError} />
@@ -102,25 +92,18 @@ class Login extends Component {
                 </Item>
                 <ErrorText message={passwordError} />
               </Form>
-              <Button full rounded dark style={styles.button} onPress={this.onLogin}>
+              <Button full rounded dark large style={styles.button} onPress={this.onLogin}>
                 <Text>Entrar</Text>
               </Button>
             </View>
+            <View style={styles.containerFooter}>
+              <Image
+                source={imgFooter}
+                style={styles.imgFooter}
+              />
+            </View>
           </View>
         </Content>
-        {!showKeyboard
-          && (
-          <View style={styles.containerFooter}>
-            <Image
-              source={imgFooter}
-              style={styles.imgFooter}
-            />
-            <Text style={styles.versionText}>
-              v
-              {Constants.manifest.version}
-            </Text>
-          </View>
-          )}
       </Container>
     );
   }
@@ -131,6 +114,7 @@ const styles = {
     alignItems: 'center',
     flex: 1,
     paddingHorizontal: 15,
+    height,
   },
   containerForm: {
     width: '100%',
@@ -147,17 +131,12 @@ const styles = {
   containerFooter: {
     width: '100%',
     position: 'absolute',
-    bottom: -3,
+    bottom: 0,
     left: 0,
   },
   imgFooter: {
     height: 200,
     width: 200,
-  },
-  versionText: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
   },
   button: {
     marginTop: 30,
